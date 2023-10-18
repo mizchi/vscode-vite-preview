@@ -1,0 +1,1 @@
+const Dep = import("./dyn-target");

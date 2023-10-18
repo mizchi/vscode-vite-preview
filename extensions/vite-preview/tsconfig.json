@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ES2022",
+    "lib": ["DOM", "ES2021", "ES2022", "ESNext", "ES2021.String"],
+    "module": "commonjs",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "rootDir": "test",
+    "outDir": "dist"
+  },
+  "include": ["test/**/*"]
+}

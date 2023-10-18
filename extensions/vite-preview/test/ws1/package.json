@@ -1,0 +1,23 @@
+{
+  "name": "test-workspace",
+  "dependencies": {
+    "vite": "4.4.11"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.6",
+    "@types/micromatch": "^4.0.3",
+    "@types/react": "^18.2.28",
+    "@types/react-dom": "^18.2.13",
+    "autoprefixer": "^10.4.16",
+    "micromatch": "^4.0.5",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "^4.1.4",
+    "svelte": "^4.2.1",
+    "svelte-hmr": "^0.15.3",
+    "tailwindcss": "^3.3.3",
+    "typescript": "5.2",
+    "vite-plugin-singlefile": "^0.13.5"
+  }
+}

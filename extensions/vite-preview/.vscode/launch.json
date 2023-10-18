@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Dev",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/test/ws1"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**",
+        "**/resources/app/out/vs/**",
+        "**/.vscode-insiders/extensions/",
+        "**/.vscode/extensions/"
+      ],
+      "sourceMaps": true,
+      "env": {
+        "VSCODE_DEBUG_MODE": "true"
+      },
+      "preLaunchTask": "${defaultBuildTask}"
+    }
+  ]
+}

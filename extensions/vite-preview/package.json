@@ -1,0 +1,89 @@
+{
+  "name": "vite-preview",
+  "displayName": "Preview current file with Vite",
+  "version": "0.0.1",
+  "packageManager": "pnpm@8.6.11",
+  "description": "An awesome vscode extension boilerplate",
+  "publisher": "mizchi",
+  "private": true,
+  "preview": true,
+  "author": {
+    "name": "mizchi",
+    "email": "miz404@gmail.com",
+    "url": "https://github.com/mizchi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mizchi/helloworld/blob/master/README.md",
+  "main": "./out/src/extension.js",
+  "icon": "assets/logo.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "vite-preview.previewCurrent",
+        "title": "VitePreview: Preview Current"
+      },
+      {
+        "command": "vite-preview.preview",
+        "title": "VitePreview: Preview"
+      },
+      {
+        "command": "vite-preview.close",
+        "title": "VitePreview: Close"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "vite-preview.preview",
+        "key": "ctrl+shift+alt+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vite-preview.previewCurrent",
+        "key": "ctrl+alt+r",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "repository": {
+    "url": "https://github.com/mizchi/vscode-vite-preview",
+    "directory": "extensions/vite-preview"
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm build --minify",
+    "clean": "npx rimraf -rf ./out",
+    "build-worker": "vite build",
+    "build": "esbuild --bundle --minify --outfile=out/src/extension.js --format=cjs --sourcemap --external:vscode --external:path --external:fs --external:worker_threads --external:url src/extension.ts",
+    "watch": "esbuild --bundle --minify --outfile=out/src/extension.js --format=cjs --sourcemap --external:vscode --external:path --external:fs --external:worker_threads --external:url --watch src/extension.ts",
+    "compile:test": "pnpm clean && tsc -b ./test/tsconfig.json",
+    "test": "pnpm compile:test && node ./out/test/runTests.js",
+    "package": "vsce package --no-dependencies --no-rewrite-relative-links",
+    "release": "vsce publish --no-dependencies --no-rewrite-relative-links"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/micromatch": "^4.0.3",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.16.19",
+    "@types/react": "^18.2.28",
+    "@types/react-dom": "^18.2.13",
+    "@types/vscode": "^1.80.0",
+    "@vscode/test-electron": "^2.3.3",
+    "@vscode/vsce": "^2.19.0",
+    "esbuild": "^0.18.11",
+    "glob": "^10.3.2",
+    "micromatch": "^4.0.5",
+    "mocha": "^10.2.0",
+    "path-browserify": "^1.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.1",
+    "rollup": "^4.1.4",
+    "util": "^0.12.5",
+    "vite": "^4.4.11",
+    "vite-plugin-singlefile": "^0.13.5"
+  }
+}

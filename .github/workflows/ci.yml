@@ -1,0 +1,93 @@
+name: CI
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  helloworld-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/helloworld
+    outputs:
+      GIT_TAG: ${{ steps.set-tag.outputs.GIT_TAG }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      # - run: corepack prepare pnpm@latest --activate
+      - run: corepack enable pnpm npm
+      - id: pnpm
+        run: echo "cache-dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm.outputs.cache-dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - run: pnpm install --frozen-lockfile --no-optional
+
+      - name: Get the date on Ubuntu/MacOS
+        id: date_unix
+        run: echo "DATE=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      - name: Cache .vscode-test
+        uses: actions/cache@v3
+        env:
+          CACHE_PREFIX: ${{ runner.os }}-vscode-test-${{ steps.date_unix.outputs.DATE }}
+        with:
+          path: .vscode-test
+          key: ${{ env.CACHE_PREFIX }}-${{ hashFiles('test/runTests.ts') }}
+          restore-keys: ${{ env.CACHE_PREFIX }}
+
+      - run: xvfb-run -a pnpm test
+      - name: Set GIT_TAG
+        id: set-tag
+        if: runner.os == 'Linux'
+        run: |
+          git fetch --tags origin
+          GIT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$GIT_TAG" ] && [ "$(git rev-list -n 1 $GIT_TAG 2>/dev/null || echo "")" = "$(git rev-parse HEAD)" ]; then
+            echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
+          else
+            echo "GIT_TAG=''" >> $GITHUB_OUTPUT
+          fi
+
+  helloworld-publish:
+    needs: helloworld-test
+    if: startsWith(needs.helloworld-test.outputs.GIT_TAG, 'v')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extensions/helloworld
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - run: corepack prepare pnpm@latest --activate
+      - id: pnpm
+        run: echo "cache-dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm.outputs.cache-dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - run: pnpm install --frozen-lockfile --no-optional
+
+      - name: Publish to Visual Studio Marketplace
+        run: pnpm run publish
+        env:
+          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+
+      # - name: Github Release
+      #   run: npx changelogithub
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
