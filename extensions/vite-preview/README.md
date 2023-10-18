@@ -2,7 +2,9 @@
 
 ## What's this
 
-- Preview react/svelte/html in vscode webview
+![](https://i.gyazo.com/d631ac2e9a022d94d2fb3a50ce79c79f.gif)
+
+- Preview components in vscode webview
 
 ## Install
 
