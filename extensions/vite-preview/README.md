@@ -9,8 +9,8 @@
 Not published to vscode marketplace yet.
 
 ```bash
-$ wget <url>
-$ code --install-extension releases/vite-preview-0.0.1.vsix
+$ wget wget https://github.com/mizchi/vscode-vite-preview/raw/main/extensions/vite-preview/releases/vite-preview-0.0.1.vsix
+$ code --install-extension vite-preview-0.0.1.vsix
 ```
 
 ## How to use

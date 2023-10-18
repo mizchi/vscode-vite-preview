@@ -78,7 +78,7 @@ function replaceDynamicImportToBase64InHtml(html: string, bundle: OutputBundle) 
 
   for (const asset of Object.values(bundle)) {
     if (asset.type === 'asset' && asset.fileName.endsWith(".css")) {
-      console.log("[add - styles]", asset.fileName);
+      // console.log("[add - styles]", asset.fileName);
       styles += asset.source;
     }
   }
@@ -122,7 +122,6 @@ export function viteSingleFile({
     config: useRecommendedBuildConfig ? _useRecommendedBuildConfig : undefined,
     enforce: "post",
     generateBundle: (_, bundle) => {
-      console.log("bundle start", bundle);
       const jsExtensionTest = /\.[mc]?js$/
       const htmlFiles = Object.keys(bundle).filter((i) => i.endsWith(".html"))
       const cssAssets = Object.keys(bundle).filter((i) => i.endsWith(".css"))

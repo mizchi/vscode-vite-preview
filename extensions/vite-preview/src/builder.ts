@@ -38,7 +38,6 @@ const root = createRoot(document.getElementById("preview-root")!).render(
 
 const svelteEntryTsx = (target: string, hasPreviewProps: boolean) => `
 import App${hasPreviewProps ? ', { __PREVIEW_PROPS__ }' : ''} from '${target}';
-console.log('App', __PREVIEW_PROPS__);
 new App({
   target: document.getElementById("preview-root"),
   props: ${hasPreviewProps ? '__PREVIEW_PROPS__' : '{}'}
@@ -69,7 +68,7 @@ export async function getContextVite(fsPath: string): Promise<ContextVite> {
 const SVELTE_PREVIEW_PROPS = /export\s+(const|let)\s+__PREVIEW_PROPS__/m;
 export async function bundle(contextVite: ContextVite, content: string): Promise<string> {
   if (contextVite.target.endsWith('.html')) {
-    console.log('[html]', content);
+    // console.log('[html]', content);
     return bundleToHtml(contextVite, {
       entry: `throw new Error('unreachable');`,
     }, true);
